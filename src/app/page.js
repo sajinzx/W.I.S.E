@@ -46,8 +46,8 @@ export default function Home() {
       <header className="w-full py-6 px-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-emerald-500/25">
-              <span className="text-xl">📊</span>
+            <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center shadow-lg shadow-emerald-500/25">
+              <img src="/logo.png" alt="W.I.S.E Logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <h1 className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
