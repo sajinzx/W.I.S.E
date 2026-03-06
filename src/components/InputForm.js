@@ -26,6 +26,11 @@ export default function InputForm({ onSubmit, loading }) {
         if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
     };
 
+    const handleChoiceMode = (mode) => {
+        setChoiceMode(mode);
+        if (errors.choice) setErrors((prev) => ({ ...prev, choice: '' }));
+    };
+
     const validateStep1 = () => {
         const errs = {};
         if (!form.salary || Number(form.salary) <= 0) errs.salary = 'Enter a valid salary';
@@ -146,7 +151,7 @@ export default function InputForm({ onSubmit, loading }) {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <button
                                     type="button"
-                                    onClick={() => setChoiceMode('timeline')}
+                                    onClick={() => handleChoiceMode('timeline')}
                                     className="p-6 rounded-xl border-2 border-slate-700 hover:border-emerald-500 bg-slate-800/50 hover:bg-slate-800 transition-all text-left group"
                                 >
                                     <div className="text-3xl mb-3">⏱️</div>
@@ -155,7 +160,7 @@ export default function InputForm({ onSubmit, loading }) {
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={() => setChoiceMode('risk')}
+                                    onClick={() => handleChoiceMode('risk')}
                                     className="p-6 rounded-xl border-2 border-slate-700 hover:border-cyan-500 bg-slate-800/50 hover:bg-slate-800 transition-all text-left group"
                                 >
                                     <div className="text-3xl mb-3">🎯</div>

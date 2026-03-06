@@ -47,7 +47,7 @@ function validatePlan(plan) {
 export async function POST(request) {
     try {
         const body = await request.json();
-        const { salary, expenses, goal, timeline, riskMode } = body;
+        const { salary, expenses, goal, timeline, riskMode, choiceMode } = body;
 
         // Validation
         if (!salary || salary <= 0) {
@@ -56,10 +56,13 @@ export async function POST(request) {
         if (!goal || goal <= 0) {
             return NextResponse.json({ error: 'Savings goal must be a positive number' }, { status: 400 });
         }
-        if (!timeline || timeline < 1 || timeline > 30) {
+        if (!choiceMode || !['timeline', 'risk'].includes(choiceMode)) {
+            return NextResponse.json({ error: 'Must choose either timeline or risk approach' }, { status: 400 });
+        }
+        if (choiceMode === 'timeline' && (!timeline || timeline < 1 || timeline > 30)) {
             return NextResponse.json({ error: 'Timeline must be between 1 and 30 years' }, { status: 400 });
         }
-        if (!['minimal', 'medium', 'high'].includes(riskMode)) {
+        if (choiceMode === 'risk' && !['minimal', 'medium', 'high'].includes(riskMode)) {
             return NextResponse.json({ error: 'Risk mode must be minimal, medium, or high' }, { status: 400 });
         }
 
@@ -108,6 +111,7 @@ export async function POST(request) {
             goal,
             timeline,
             riskMode,
+            choiceMode,
         });
 
         return NextResponse.json({ ...fallbackPlan, source: 'calculation' });
