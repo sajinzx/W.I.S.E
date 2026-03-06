@@ -30,6 +30,41 @@ export default function InvestmentSummary({ summary }) {
                     </div>
                 ))}
             </div>
+            {summary.choiceMode && (
+                <div className="glass-card p-6 mt-4">
+                    {summary.choiceMode === 'timeline' ? (
+                        <div className="text-center">
+                            <p className="text-slate-300 mb-2">Based on your {summary.timeline}-year timeline:</p>
+                            <div className="flex items-center justify-center gap-4 flex-wrap">
+                                <div className="px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30">
+                                    <span className="text-emerald-400 font-semibold">Required Return: {summary.calculatedReturn}%</span>
+                                </div>
+                                <div className="px-4 py-2 rounded-lg bg-cyan-500/20 border border-cyan-500/30">
+                                    <span className="text-cyan-400 font-semibold">Risk Level: {summary.riskLevel === 'minimal' ? 'Low' : summary.riskLevel === 'medium' ? 'Medium' : 'High'}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="text-center">
+                            <p className="text-slate-300 mb-3">Based on your {summary.riskLevel === 'minimal' ? 'Low' : summary.riskLevel === 'medium' ? 'Medium' : 'High'} risk appetite:</p>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <div className={`p-3 rounded-lg ${summary.riskLevel === 'minimal' ? 'bg-emerald-500/20 border-2 border-emerald-500' : 'bg-slate-700/30 border border-slate-600'}`}>
+                                    <p className="text-xs text-slate-400 mb-1">Low Risk (8-10%)</p>
+                                    <p className="text-lg font-bold text-white">{summary.timelineOptions?.minimal || 'N/A'} years</p>
+                                </div>
+                                <div className={`p-3 rounded-lg ${summary.riskLevel === 'medium' ? 'bg-cyan-500/20 border-2 border-cyan-500' : 'bg-slate-700/30 border border-slate-600'}`}>
+                                    <p className="text-xs text-slate-400 mb-1">Medium Risk (12-15%)</p>
+                                    <p className="text-lg font-bold text-white">{summary.timelineOptions?.medium || 'N/A'} years</p>
+                                </div>
+                                <div className={`p-3 rounded-lg ${summary.riskLevel === 'high' ? 'bg-purple-500/20 border-2 border-purple-500' : 'bg-slate-700/30 border border-slate-600'}`}>
+                                    <p className="text-xs text-slate-400 mb-1">High Risk (15%+)</p>
+                                    <p className="text-lg font-bold text-white">{summary.timelineOptions?.high || 'N/A'} years</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 }
