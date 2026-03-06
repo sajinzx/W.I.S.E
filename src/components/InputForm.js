@@ -38,7 +38,9 @@ export default function InputForm({ onSubmit, loading }) {
 
     const validateStep2 = () => {
         const errs = {};
-        if (choiceMode === 'timeline' && (!form.timeline || Number(form.timeline) < 1 || Number(form.timeline) > 30)) {
+        if (!choiceMode) {
+            errs.choice = 'Please select either Time Frame or Risk Appetite';
+        } else if (choiceMode === 'timeline' && (!form.timeline || Number(form.timeline) < 1 || Number(form.timeline) > 30)) {
             errs.timeline = 'Timeline must be 1–30 years';
         }
         setErrors(errs);
@@ -140,6 +142,7 @@ export default function InputForm({ onSubmit, loading }) {
                     {!choiceMode ? (
                         <div className="space-y-4">
                             <p className="text-slate-300 text-center mb-6">How would you like to plan your investment?</p>
+                            {errors.choice && <p className="form-error text-center">{errors.choice}</p>}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <button
                                     type="button"
@@ -211,7 +214,7 @@ export default function InputForm({ onSubmit, loading }) {
                             <span className="text-xl">→</span>
                         </span>
                     </button>
-                ) : choiceMode && (
+                ) : (
                     <div className="flex gap-3 mt-8">
                         <button type="button" onClick={() => setStep(1)} className="px-6 py-3 rounded-xl border border-slate-600 text-slate-300 hover:bg-slate-800 transition-all">
                             ← Back
