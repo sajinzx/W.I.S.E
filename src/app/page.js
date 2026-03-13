@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import InputForm from '@/components/InputForm';
 import ResultsDashboard from '@/components/ResultsDashboard';
 
@@ -56,6 +57,11 @@ export default function Home() {
               <p className="text-[10px] text-slate-500 uppercase tracking-widest">WEALTH INTELLIGENCE THROUGH STRATEGY AND ENGINEERING</p>
             </div>
           </div>
+          <nav>
+            <Link href="/paper-trading" className="px-4 py-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all font-medium text-sm">
+              Paper Trading →
+            </Link>
+          </nav>
         </div>
       </header>
 
@@ -72,7 +78,7 @@ export default function Home() {
                 </span>
               </h2>
               <p className="text-slate-400 text-base md:text-lg leading-relaxed">
-                Get AI-powered personalized investment strategies with diversified portfolios,
+                Get personalized investment strategies with diversified portfolios,
                 SIP recommendations, and compound growth projections.
               </p>
             </div>

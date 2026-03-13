@@ -18,15 +18,9 @@ export default function ResultsDashboard({ data, onReset }) {
                         <h2 className="text-2xl font-bold text-white">Your Investment Plan</h2>
                         <p className="text-slate-400 text-sm flex items-center gap-2">
                             Generated
-                            {data.source === 'ai' ? (
-                                <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-400 text-xs font-medium border border-purple-500/30">
-                                    🤖 AI Powered
-                                </span>
-                            ) : (
-                                <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-400 text-xs font-medium border border-cyan-500/30">
-                                    ⚡ Engine Calculated
-                                </span>
-                            )}
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-400 text-xs font-medium border border-cyan-500/30">
+                                ⚡ Engine Calculated
+                            </span>
                         </p>
                     </div>
                 </div>
@@ -50,7 +44,7 @@ export default function ResultsDashboard({ data, onReset }) {
             {/* Disclaimer */}
             <div className="glass-card p-4 !border-amber-500/20 fade-in-up" style={{ animationDelay: '0.4s' }}>
                 <p className="text-amber-400/80 text-xs text-center leading-relaxed">
-                    ⚠️ <strong>Disclaimer:</strong> This is an AI-generated projection based on historical average returns.
+                    ⚠️ <strong>Disclaimer:</strong> This is a projection based on historical average returns.
                     Actual returns may vary. Mutual fund investments are subject to market risks.
                     Please read scheme-related documents carefully before investing. Past performance is not indicative of future results.
                 </p>

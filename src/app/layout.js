@@ -9,7 +9,7 @@ const inter = Inter({
 
 export const metadata = {
   title: "W.I.S.E — Wealth Intelligence Through Strategy And Engineering",
-  description: "AI-powered personalized investment strategies with diversified portfolios, SIP recommendations, and compound growth projections for Indian investors.",
+  description: "Personalized investment strategies with diversified portfolios, SIP recommendations, and compound growth projections for Indian investors.",
 };
 
 export default function RootLayout({ children }) {
