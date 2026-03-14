@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import PaperTradingSimulator from '@/components/PaperTradingSimulator';
+import AuthNav from '@/components/AuthNav';
 
 export default function PaperTradingPage() {
   return (
@@ -26,10 +27,11 @@ export default function PaperTradingPage() {
               </h1>
             </div>
           </div>
-          <nav>
-            <Link href="/" className="px-4 py-2 rounded-lg bg-slate-800/50 text-slate-300 hover:bg-slate-700/50 hover:text-white transition-all text-sm font-medium border border-slate-700/50">
-              ← Back to Planner
+          <nav className="flex items-center gap-4">
+            <Link href="/" className="hidden sm:inline-flex px-4 py-2 rounded-lg bg-slate-800/50 text-slate-300 hover:bg-slate-700/50 hover:text-white transition-all text-sm font-medium border border-slate-700/50">
+              &larr; Back to Planner
             </Link>
+            <AuthNav />
           </nav>
         </div>
       </header>

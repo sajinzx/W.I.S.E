@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { useSession } from 'next-auth/react';
 import { 
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine
 } from 'recharts';
@@ -83,6 +84,11 @@ export default function PaperTradingSimulator() {
   const [balance, setBalance] = useState(INITIAL_BALANCE);
   const [position, setPosition] = useState(null); // { type: 'BUY'|'SELL', entryPrice: number, qty: number }
   const [tradeHistory, setTradeHistory] = useState([]);
+
+  // Auth & Save state
+  const { data: session } = useSession();
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   // Ref to hold current state for the interval closure
   const stateRef = useRef({ currentTickIndex, isSimulating, isPaused, fullDayData });
@@ -211,6 +217,43 @@ export default function PaperTradingSimulator() {
     setPosition(null);
   };
 
+  const handleSaveSession = async () => {
+    if (!session) {
+      alert("Please login to save your session.");
+      return;
+    }
+    
+    setIsSaving(true);
+    try {
+      const res = await fetch('/api/iterations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: `${asset} Simulation - ${date}`,
+          type: 'SIMULATION',
+          data: {
+            asset,
+            date,
+            finalBalance: balance,
+            trades: tradeHistory
+          }
+        })
+      });
+      
+      if (res.ok) {
+        setSaveSuccess(true);
+        setTimeout(() => setSaveSuccess(false), 3000);
+      } else {
+         alert("Failed to save session.");
+      }
+    } catch (e) {
+      console.error(e);
+      alert("Error saving session");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
 
   return (
     <div className="flex flex-col lg:flex-row gap-6">
@@ -289,9 +332,9 @@ export default function PaperTradingSimulator() {
 
         {/* Chart Card */}
         <div className="glass-card p-6 border-slate-800/60 shadow-xl overflow-hidden relative">
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex justify-between items-start mb-6">
              <div>
-                <h3 className="text-lg font-bold text-white">{asset} <span className="text-slate-500 font-normal text-sm ml-2">Intraday (1m) • {date}</span></h3>
+                <h3 className="text-lg font-bold text-white mb-1">{asset} <span className="text-slate-500 font-normal text-sm ml-2">Intraday (1m) • {date}</span></h3>
                 <div className="flex items-baseline gap-2 mt-1">
                   <span className="text-3xl font-bold font-mono tracking-tight text-white">
                     ₹{currentPrice.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
@@ -306,15 +349,32 @@ export default function PaperTradingSimulator() {
                 </div>
              </div>
              
-             {isSimulating && !isPaused && (
-                <div className="flex items-center gap-2">
-                  <span className="relative flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                  </span>
-                  <span className="text-xs text-emerald-400 font-medium tracking-wider uppercase">Live</span>
-                </div>
-             )}
+             <div className="flex flex-col items-end gap-2">
+               {isSimulating && !isPaused && (
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="relative flex h-3 w-3">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                    </span>
+                    <span className="text-xs text-emerald-400 font-medium tracking-wider uppercase">Live</span>
+                  </div>
+               )}
+               
+               {tradeHistory.length > 0 && !isSimulating && (
+                 <button 
+                   onClick={handleSaveSession}
+                   disabled={isSaving || !session}
+                   className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-all ${
+                     saveSuccess ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' :
+                     !session ? 'bg-slate-800 text-slate-500 border-slate-700 cursor-not-allowed opacity-50' :
+                     'bg-indigo-500/20 text-indigo-400 border-indigo-500/30 hover:bg-indigo-500/30 cursor-pointer'
+                   }`}
+                   title={!session ? "Login to save" : "Save this session to your dashboard"}
+                 >
+                   {saveSuccess ? '✓ Saved' : isSaving ? 'Saving...' : '💾 Save Session'}
+                 </button>
+               )}
+             </div>
           </div>
 
           <div className="h-[400px] w-full mt-4 -ml-4">
